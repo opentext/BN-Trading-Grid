@@ -1,1 +1,1 @@
-# BN-Trading-Grid
+Trading Grid
