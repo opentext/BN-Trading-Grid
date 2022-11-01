@@ -1,8 +1,7 @@
 {
 	"info": {
-		"_postman_id": "29f7ceb9-6f0f-4adb-85ba-af1f42fe6548",
+		"_postman_id": "f6ebf5ed-d269-4bce-957f-df753ac4e0bf",
 		"name": "Cartographer Api Endpoints",
-		"description": "TGC Product Description - https://confluence.opentext.com/display/BNTGO/Trading+Grid+Cartographer+22.3+APIs\n\nContact Support:\n Name: NimbleWits\n Email: gxs-gxsitcnimblewits@opentext.com",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "12320982"
 	},
@@ -28,7 +27,7 @@
 						}
 					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"description": "(Required) Consumer secret",
@@ -61,7 +60,7 @@
 						{
 							"name": "Return access token",
 							"originalRequest": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"description": "(Required) Consumer secret",
@@ -100,7 +99,7 @@
 						{
 							"name": "Invalid Request",
 							"originalRequest": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"description": "(Required) Consumer secret",
@@ -139,7 +138,7 @@
 						{
 							"name": "Un-Authorised",
 							"originalRequest": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"description": "(Required) Consumer secret",
@@ -178,7 +177,7 @@
 						{
 							"name": "Forbidden",
 							"originalRequest": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"description": "(Required) Consumer secret",
@@ -217,7 +216,7 @@
 						{
 							"name": "Internal Server Error",
 							"originalRequest": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"description": "(Required) Consumer secret",
@@ -371,7 +370,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"acceptanceState\": \"<string>\",\n  \"carbonCopy\": \"<string>\",\n  \"characterConversion\": \"<string>\",\n  \"chunking\": \"<string>\",\n  \"clonable\": \"<boolean>\",\n  \"commentCount\": \"<long>\",\n  \"customerModifiedMap\": \"<string>\",\n  \"databaseLookup\": \"<string>\",\n  \"direction\": \"<string>\",\n  \"docType\": \"<string>\",\n  \"id\": \"<string>\",\n  \"lastModifiedDate\": \"<string>\",\n  \"multiByteData\": \"<string>\",\n  \"multipleTPLogic\": \"<string>\",\n  \"name\": \"<string>\",\n  \"passThrough\": \"<string>\",\n  \"preProcess\": \"<string>\",\n  \"prodMap\": \"<string>\",\n  \"reserve\": {\n    \"timestamp\": \"<long>\",\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\"\n  },\n  \"schedule\": {\n    \"requestedTimeMs\": \"<long>\",\n    \"scheduledTimeMs\": \"<long>\",\n    \"type\": \"<string>\",\n    \"userName\": \"<string>\"\n  },\n  \"sorting\": \"<string>\",\n  \"sortingList\": \"<string>\",\n  \"srcApplication\": \"<string>\",\n  \"srcDocType\": \"<string>\",\n  \"srcFormat\": \"<string>\",\n  \"srcStd\": \"<string>\",\n  \"srcTransaction\": \"<string>\",\n  \"srcVersion\": \"<string>\",\n  \"standard\": \"<string>\",\n  \"status\": \"<string>\",\n  \"tgtApplication\": \"<string>\",\n  \"tgtDocType\": \"<string>\",\n  \"tgtFormat\": \"<string>\",\n  \"tgtStd\": \"<string>\",\n  \"tgtTransaction\": \"<string>\",\n  \"tgtVersion\": \"<string>\",\n  \"translator\": \"<string>\",\n  \"version\": \"<string>\"\n}"
+							"body": "{\n  \"acceptanceState\": \"<string>\",\n  \"carbonCopy\": \"<string>\",\n  \"characterConversion\": \"<string>\",\n  \"chunking\": \"<string>\",\n  \"clonable\": \"<boolean>\",\n  \"commentCount\": \"<long>\",\n  \"customerModifiedMap\": \"<string>\",\n  \"databaseLookup\": \"<string>\",\n  \"deletable\": true,\n  \"direction\": \"<string>\",\n  \"docType\": \"<string>\",\n  \"id\": \"<string>\",\n  \"lastModifiedDate\": \"<string>\",\n  \"multiByteData\": \"<string>\",\n  \"multipleTPLogic\": \"<string>\",\n  \"name\": \"<string>\",\n  \"passThrough\": \"<string>\",\n  \"preProcess\": \"<string>\",\n  \"prodMap\": \"<string>\",\n  \"reserve\": {\n    \"timestamp\": \"<long>\",\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\"\n  },\n  \"schedule\": {\n    \"requestedTimeMs\": \"<long>\",\n    \"scheduledTimeMs\": \"<long>\",\n    \"type\": \"<string>\",\n    \"userName\": \"<string>\"\n  },\n  \"sorting\": \"<string>\",\n  \"sortingList\": \"<string>\",\n  \"srcApplication\": \"<string>\",\n  \"srcDocType\": \"<string>\",\n  \"srcFormat\": \"<string>\",\n  \"srcStd\": \"<string>\",\n  \"srcTransaction\": \"<string>\",\n  \"srcVersion\": \"<string>\",\n  \"standard\": \"<string>\",\n  \"status\": \"<string>\",\n  \"tgtApplication\": \"<string>\",\n  \"tgtDocType\": \"<string>\",\n  \"tgtFormat\": \"<string>\",\n  \"tgtStd\": \"<string>\",\n  \"tgtTransaction\": \"<string>\",\n  \"tgtVersion\": \"<string>\",\n  \"translator\": \"<string>\",\n  \"version\": \"<string>\"\n}"
 						},
 						{
 							"name": "Bad Request",
@@ -626,7 +625,7 @@
 					]
 				},
 				{
-					"name": "Add new version of map",
+					"name": "Add map version",
 					"request": {
 						"auth": {
 							"type": "apikey",
@@ -1758,7 +1757,7 @@
 					]
 				},
 				{
-					"name": "Get map-reserve information",
+					"name": "Get map reservation info",
 					"request": {
 						"auth": {
 							"type": "apikey",
@@ -2720,7 +2719,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"page\": {\n    \"page\": \"<string>\",\n    \"pageSize\": \"<string>\",\n    \"pageTotal\": \"<string>\",\n    \"sortOrder\": \"<string>\",\n    \"totalCount\": \"<string>\"\n  },\n  \"response\": [\n    {\n      \"acceptanceState\": \"<string>\",\n      \"carbonCopy\": \"<string>\",\n      \"characterConversion\": \"<string>\",\n      \"chunking\": \"<string>\",\n      \"clonable\": \"<boolean>\",\n      \"commentCount\": \"<long>\",\n      \"customerModifiedMap\": \"<string>\",\n      \"databaseLookup\": \"<string>\",\n      \"direction\": \"<string>\",\n      \"docType\": \"<string>\",\n      \"id\": \"<string>\",\n      \"lastModifiedDate\": \"<string>\",\n      \"multiByteData\": \"<string>\",\n      \"multipleTPLogic\": \"<string>\",\n      \"name\": \"<string>\",\n      \"passThrough\": \"<string>\",\n      \"preProcess\": \"<string>\",\n      \"prodMap\": \"<string>\",\n      \"reserve\": {\n        \"timestamp\": \"<long>\",\n        \"userId\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"schedule\": {\n        \"requestedTimeMs\": \"<long>\",\n        \"scheduledTimeMs\": \"<long>\",\n        \"type\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"sorting\": \"<string>\",\n      \"sortingList\": \"<string>\",\n      \"srcApplication\": \"<string>\",\n      \"srcDocType\": \"<string>\",\n      \"srcFormat\": \"<string>\",\n      \"srcStd\": \"<string>\",\n      \"srcTransaction\": \"<string>\",\n      \"srcVersion\": \"<string>\",\n      \"standard\": \"<string>\",\n      \"status\": \"<string>\",\n      \"tgtApplication\": \"<string>\",\n      \"tgtDocType\": \"<string>\",\n      \"tgtFormat\": \"<string>\",\n      \"tgtStd\": \"<string>\",\n      \"tgtTransaction\": \"<string>\",\n      \"tgtVersion\": \"<string>\",\n      \"translator\": \"<string>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"acceptanceState\": \"<string>\",\n      \"carbonCopy\": \"<string>\",\n      \"characterConversion\": \"<string>\",\n      \"chunking\": \"<string>\",\n      \"clonable\": \"<boolean>\",\n      \"commentCount\": \"<long>\",\n      \"customerModifiedMap\": \"<string>\",\n      \"databaseLookup\": \"<string>\",\n      \"direction\": \"<string>\",\n      \"docType\": \"<string>\",\n      \"id\": \"<string>\",\n      \"lastModifiedDate\": \"<string>\",\n      \"multiByteData\": \"<string>\",\n      \"multipleTPLogic\": \"<string>\",\n      \"name\": \"<string>\",\n      \"passThrough\": \"<string>\",\n      \"preProcess\": \"<string>\",\n      \"prodMap\": \"<string>\",\n      \"reserve\": {\n        \"timestamp\": \"<long>\",\n        \"userId\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"schedule\": {\n        \"requestedTimeMs\": \"<long>\",\n        \"scheduledTimeMs\": \"<long>\",\n        \"type\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"sorting\": \"<string>\",\n      \"sortingList\": \"<string>\",\n      \"srcApplication\": \"<string>\",\n      \"srcDocType\": \"<string>\",\n      \"srcFormat\": \"<string>\",\n      \"srcStd\": \"<string>\",\n      \"srcTransaction\": \"<string>\",\n      \"srcVersion\": \"<string>\",\n      \"standard\": \"<string>\",\n      \"status\": \"<string>\",\n      \"tgtApplication\": \"<string>\",\n      \"tgtDocType\": \"<string>\",\n      \"tgtFormat\": \"<string>\",\n      \"tgtStd\": \"<string>\",\n      \"tgtTransaction\": \"<string>\",\n      \"tgtVersion\": \"<string>\",\n      \"translator\": \"<string>\",\n      \"version\": \"<string>\"\n    }\n  ]\n}"
+							"body": "{\n  \"page\": {\n    \"page\": \"<string>\",\n    \"pageSize\": \"<string>\",\n    \"pageTotal\": \"<string>\",\n    \"sortOrder\": \"<string>\",\n    \"totalCount\": \"<string>\"\n  },\n  \"response\": [\n    {\n      \"acceptanceState\": \"<string>\",\n      \"carbonCopy\": \"<string>\",\n      \"characterConversion\": \"<string>\",\n      \"chunking\": \"<string>\",\n      \"clonable\": \"<boolean>\",\n      \"commentCount\": \"<long>\",\n      \"customerModifiedMap\": \"<string>\",\n      \"databaseLookup\": \"<string>\",\n      \"deletable\": true,\n      \"direction\": \"<string>\",\n      \"docType\": \"<string>\",\n      \"id\": \"<string>\",\n      \"lastModifiedDate\": \"<string>\",\n      \"multiByteData\": \"<string>\",\n      \"multipleTPLogic\": \"<string>\",\n      \"name\": \"<string>\",\n      \"passThrough\": \"<string>\",\n      \"preProcess\": \"<string>\",\n      \"prodMap\": \"<string>\",\n      \"reserve\": {\n        \"timestamp\": \"<long>\",\n        \"userId\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"schedule\": {\n        \"requestedTimeMs\": \"<long>\",\n        \"scheduledTimeMs\": \"<long>\",\n        \"type\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"sorting\": \"<string>\",\n      \"sortingList\": \"<string>\",\n      \"srcApplication\": \"<string>\",\n      \"srcDocType\": \"<string>\",\n      \"srcFormat\": \"<string>\",\n      \"srcStd\": \"<string>\",\n      \"srcTransaction\": \"<string>\",\n      \"srcVersion\": \"<string>\",\n      \"standard\": \"<string>\",\n      \"status\": \"<string>\",\n      \"tgtApplication\": \"<string>\",\n      \"tgtDocType\": \"<string>\",\n      \"tgtFormat\": \"<string>\",\n      \"tgtStd\": \"<string>\",\n      \"tgtTransaction\": \"<string>\",\n      \"tgtVersion\": \"<string>\",\n      \"translator\": \"<string>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"acceptanceState\": \"<string>\",\n      \"carbonCopy\": \"<string>\",\n      \"characterConversion\": \"<string>\",\n      \"chunking\": \"<string>\",\n      \"clonable\": \"<boolean>\",\n      \"commentCount\": \"<long>\",\n      \"customerModifiedMap\": \"<string>\",\n      \"databaseLookup\": \"<string>\",\n      \"direction\": \"<string>\",\n      \"docType\": \"<string>\",\n      \"id\": \"<string>\",\n      \"lastModifiedDate\": \"<string>\",\n      \"multiByteData\": \"<string>\",\n      \"multipleTPLogic\": \"<string>\",\n      \"name\": \"<string>\",\n      \"passThrough\": \"<string>\",\n      \"preProcess\": \"<string>\",\n      \"prodMap\": \"<string>\",\n      \"reserve\": {\n        \"timestamp\": \"<long>\",\n        \"userId\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"schedule\": {\n        \"requestedTimeMs\": \"<long>\",\n        \"scheduledTimeMs\": \"<long>\",\n        \"type\": \"<string>\",\n        \"userName\": \"<string>\"\n      },\n      \"sorting\": \"<string>\",\n      \"sortingList\": \"<string>\",\n      \"srcApplication\": \"<string>\",\n      \"srcDocType\": \"<string>\",\n      \"srcFormat\": \"<string>\",\n      \"srcStd\": \"<string>\",\n      \"srcTransaction\": \"<string>\",\n      \"srcVersion\": \"<string>\",\n      \"standard\": \"<string>\",\n      \"status\": \"<string>\",\n      \"tgtApplication\": \"<string>\",\n      \"tgtDocType\": \"<string>\",\n      \"tgtFormat\": \"<string>\",\n      \"tgtStd\": \"<string>\",\n      \"tgtTransaction\": \"<string>\",\n      \"tgtVersion\": \"<string>\",\n      \"translator\": \"<string>\",\n      \"version\": \"<string>\"\n    }\n  ]\n}"
 						},
 						{
 							"name": "Bad Request",
@@ -2941,7 +2940,7 @@
 					]
 				},
 				{
-					"name": "Download XBM",
+					"name": "Download map",
 					"request": {
 						"auth": {
 							"type": "apikey",
@@ -3261,7 +3260,7 @@
 					]
 				},
 				{
-					"name": "Get latest 5 version of the XBM",
+					"name": "Get map versions",
 					"request": {
 						"auth": {
 							"type": "apikey",
