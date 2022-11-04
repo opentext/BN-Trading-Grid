@@ -319,7 +319,7 @@
 								}
 							]
 						},
-						"description": "Get map infomation by specifying either mapId or mapName under a solutionId."
+						"description": "Get map infomation by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -699,7 +699,7 @@
 								}
 							]
 						},
-						"description": "Add new version of xbm file by specifying either mapId or mapName under a solutionId."
+						"description": "Add new version of xbm file by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -1074,7 +1074,7 @@
 								}
 							]
 						},
-						"description": "Get annotations for a map by specifying either mapId or mapName under a solutionId."
+						"description": "Get annotations for a map by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -1445,7 +1445,7 @@
 								}
 							]
 						},
-						"description": "Reserve a map by specifying either mapId or mapName under a solutionId."
+						"description": "Reserve a map by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -1816,7 +1816,7 @@
 								}
 							]
 						},
-						"description": "Get reserve information of a map by specifying either mapId or mapName under a solutionId."
+						"description": "Get reserve information of a map by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -2238,7 +2238,7 @@
 								}
 							]
 						},
-						"description": "Un-reserve a reserved map by specifying either mapId or mapName under a solutionId."
+						"description": "Un-reserve a reserved map by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -2664,7 +2664,7 @@
 								}
 							]
 						},
-						"description": "Get list of maps with map metadata under a solutionId. To get paginated response, mention pageSize and pageNo. Specify the sorting order to get the maps list in either ascending or descending order."
+						"description": "Get list of maps with map metadata under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence. To get paginated response, mention pageSize and pageNo. Specify the sorting order to get the maps list in either ascending or descending order."
 					},
 					"response": [
 						{
@@ -3319,7 +3319,7 @@
 								}
 							]
 						},
-						"description": "Get list of 5 latest versions of the XBM by specifying either mapId or mapName under a solutionId."
+						"description": "Get list of 5 latest versions of the XBM by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
@@ -3893,7 +3893,7 @@
 								}
 							]
 						},
-						"description": "Get tuple information for TP setups by specifying either mapId or mapName under a solutionId."
+						"description": "Get tuple information for TP setups by specifying either mapId or mapName under a solutionId. If the user provides both mapId and mapName, then mapId takes precedence."
 					},
 					"response": [
 						{
