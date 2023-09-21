@@ -1,11 +1,11 @@
-#Opentext Trading Grid Cartographer Postman Collection
+# Opentext Trading Grid Cartographer Postman Collection
 
-##Description
+## Description
 
 Trading Grid Cartographer provides customers with an advanced level of visibility into which maps are live, what each map is doing, and the ability to collaborate across maps to ensure all expectations are being met. Our APIs are designed to provide additional options for visibility into your OpenText mapping solution.
 
 
-##Below are the list of APIs supported
+## Below are the list of APIs supported
 
 - Authentication
 - Get solutions
@@ -30,14 +30,14 @@ Trading Grid Cartographer provides customers with an advanced level of visibilit
 - Cancel scheduled Deploy/Promote of Map
 - Deploy/Promote Map
 
-##Import Postman Collection
+## Import Postman Collection
 
 The collection can be imported in the postman application using the "import from file" option.
 
-##Authentication
+## Authentication
 
 Authentication API is used to get access tokens for customers based on name and password. Response of this API has a field called “accessToken” which is used as a token in header parameter of REST APIs.
 
-##API Documentation
+## API Documentation
 
-[Cartographer API Endpoints | Search & Discover | APIs | Developer | OpenText] (https://develop.devx.cfcr-lab.bp-paas.otxlab.net/resources/documentation/f443f68e-f430-4e50-9d2f-37162870258a/4db53f07fbe9da82cd06be8e072dee42/page/1
+[Cartographer product information and documentation](https://developer.opentext.com/ce/products/tradinggridcartographer)
