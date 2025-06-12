@@ -1,0 +1,785 @@
+{
+	"info": {
+		"_postman_id": "878e907f-a042-4495-a817-7ee6774617a2",
+		"name": "Community Mgmt API betagrid",
+		"description": "## TGCommunity Services REST API's\n\n[https://developer.opentext.com/ce/products/active-community/apis/community-management-services-trading-grid](https://developer.opentext.com/ce/products/active-community/apis/community-management-services-trading-grid)\n\nFor the calls below you need the BUID / companyId **GC51278300AS**\n\n- You can get a list of users for a company, which includes userId, loginId, email, lastName, firstName\n    \n\nOne thing that is a bit confusing is that\n\n- to find a particular user’s userId, you need to search loginId validuserid@somewhere.com\n    \n- to retrieve a user’s details you use either loginId validuserid@somewhere.com or userId **GCPHO01O61184**\n    \n- to retrieve a user’s roles, you need to use loginId validuserid@somewhere.com\n    \n\nThe APIs do not allow searches by email address or by name.\n\nSo, as a normal client of the API, I would know my BUID. To get a list of roles for “Firstname Lastname”\n\n1. retrieve list all users of my BUID\n    \n2. search that json for firstName = Firstname and lastName = Lastname\n    \n3. use the loginId of that user object to return the list of roles\n    \n\n**loginId** may be changed by the user within TGO. Therefore, every effort to look at or update users or roles would **require retreiving the list of all users first**",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5147552"
+	},
+	"item": [
+		{
+			"name": "PD-Get-Token-OTDEMO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"Token\", jsonData.access_token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v1/oauth2/tokens?grant_type=client_credentials",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v1",
+						"oauth2",
+						"tokens"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Company",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Trading Partners",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/partnerDirectory",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"partnerDirectory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "details for Trading Partner",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/partnerDirectory?partnerCompanyName=Verona Vittles",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"partnerDirectory"
+					],
+					"query": [
+						{
+							"key": "partnerCompanyId",
+							"value": "GC041543822654",
+							"disabled": true
+						},
+						{
+							"key": "partnerCompanyName",
+							"value": "Verona Vittles"
+						},
+						{
+							"key": "tradingAddress",
+							"value": "ZZ:DEMOSUPPLIER5",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List all users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users"
+					],
+					"query": [
+						{
+							"key": "loginId",
+							"value": "{{MyloginId}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search user loginId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users?loginId={{MyloginId}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users"
+					],
+					"query": [
+						{
+							"key": "loginId",
+							"value": "{{MyloginId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "details for user Firstname",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{MyuserId}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{MyuserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"address\": {\r\n            \"addressLine1\": \"11 British American Blvd\",\r\n            \"addressLine2\": \"WORK FROM HOME\",\r\n            \"city\": \"Latham\",\r\n            \"state\": \"NY\",\r\n            \"postalCode\": \"12110\",\r\n            \"countryCode\": \"US\"\r\n        }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{MyuserId}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{MyuserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete NEWuserId",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{NEWuserId}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{NEWuserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(pm.response.text());\r",
+							"pm.collectionVariables.set(\"NEWuserId\", jsonData.uniqueId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"NEWloginId\", \"HermanMunster@opentextdemo.com\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"address\": {\r\n    \"addressLine1\": \"1313 Mockingbird Lane\",\r\n    \"addressLine2\": \"\",\r\n    \"city\": \"Hollywood\",\r\n    \"countryCode\": \"CA\",\r\n    \"postalCode\": \"11111\",\r\n    \"state\": \"CA\"\r\n  },\r\n  \"contactInformation\": {\r\n    \"email\": \"somebody@somewhere.com\",\r\n    \"faxNumber\": \"\",\r\n    \"mobile\": \"\",\r\n    \"phoneNumber\": \"5551212\",\r\n    \"phoneNumberExtention\": \"\"\r\n  },\r\n  \"firstName\": \"Herman\",\r\n  \"isConsentClause\": \"No\",\r\n  \"isDayLightSavingsTimeObserved\": \"No\",\r\n  \"isRequiredOpenTextMarketingMaterials\": \"No\",\r\n  \"lastName\": \"Munster\",\r\n  \"loginId\": \"{{NEWloginId}}\",\r\n  \"loginPassword\": \"o0ZCWAJ9_VJGEvRhyK\",\r\n  \"preferredDateFormat\": \"MM/dd/yy\",\r\n  \"preferredLanguage\": \"en\",\r\n  \"preferredTimezone\": \"America/New_York\",\r\n  \"type\": \"Web\",\r\n  \"userPasswordHint\": {\r\n    \"pwdHintQuestionAnswer1\": {\r\n      \"answer\": \"festermaiden\",\r\n      \"question\": \"What is your mother's maiden Name?\"\r\n    },\r\n    \"pwdHintQuestionAnswer2\": {\r\n      \"answer\": \"festersport\",\r\n      \"question\": \"What is your favorite Sport?\"\r\n    },\r\n    \"pwdHintQuestionAnswer3\": {\r\n      \"answer\": \"festercolor\",\r\n      \"question\": \"What is your favorite color?\"\r\n    },\r\n    \"pwdHintQuestionAnswer4\": {\r\n      \"answer\": \"festerjob\",\r\n      \"question\": \"In what city or town was your first job?\"\r\n    },\r\n    \"pwdHintQuestionAnswer5\": {\r\n      \"answer\": \"festerschool\",\r\n      \"question\": \"What is the name of the first school you attended?\"\r\n    },\r\n    \"pwdHintQuestionAnswer6\": {\r\n      \"answer\": \"festerteacher\",\r\n      \"question\": \"What is the name of your favorite childhood teacher?\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Roles for user Firstname",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{MyloginId}}/roles",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{MyloginId}}",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Roles for Firstname",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"roleName\": \"Email2EDI custom\"\r\n  }\r\n]"
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{MyloginId}}/roles?action=Add",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{MyloginId}}",
+						"roles"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "Add",
+							"description": "Use action = Add / Remove to add or remove user roles"
+						},
+						{
+							"key": "action",
+							"value": "Remove",
+							"description": "Use action = Add / Remove to add or remove user roles",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Roles for NEWloginId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{NEWloginId}}/roles",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{NEWloginId}}",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Roles NEWloginId",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"roleName\": \"OCC User\"\r\n    },\r\n    {\r\n        \"roleName\": \"EDI Admin custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Email2EDI custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Lens Payload and Redelivery custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Cartographer XREFAdmin custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Command Center Default Role\"\r\n    },\r\n    {\r\n        \"roleName\": \"Cartographer XREFStandard\"\r\n    },\r\n    {\r\n        \"roleName\": \"Cartographer StandardUser\"\r\n    },\r\n    {\r\n        \"roleName\": \"TP Graph custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Cartographer Customer Dev\"\r\n    },\r\n    {\r\n        \"roleName\": \"Active Integrity User\"\r\n    },\r\n    {\r\n        \"roleName\": \"Active Integrity Admin\"\r\n    },\r\n    {\r\n        \"roleName\": \"Account Admin\"\r\n    },\r\n    {\r\n        \"roleName\": \"Parent-Child Admin\"\r\n    },\r\n    {\r\n        \"roleName\": \"Lens Standard Role\"\r\n    },\r\n    {\r\n        \"roleName\": \"SLM Admin User\"\r\n    },\r\n    {\r\n        \"roleName\": \"Aviator Advisor Standard User\"\r\n    },\r\n    {\r\n        \"roleName\": \"Community Projects Administrator\"\r\n    },\r\n    {\r\n        \"roleName\": \"Partner Admin\"\r\n    },\r\n    {\r\n        \"roleName\": \"Command Center Integration Monitor Business Role\"\r\n    },\r\n    {\r\n        \"roleName\": \"Cartographer Maps custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Manage Company Custom Data custom\"\r\n    },\r\n    {\r\n        \"roleName\": \"Security Admin\"\r\n    }\r\n]"
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/users/{{NEWloginId}}/roles?action=Add",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"users",
+						"{{NEWloginId}}",
+						"roles"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "Add",
+							"description": "Use action = Add / Remove to add or remove user roles"
+						},
+						{
+							"key": "action",
+							"value": "Remove",
+							"description": "Use action = Add / Remove to add or remove user roles",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "entitlements for Company",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/companies/{{companyId}}/entitlements",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"companies",
+						"{{companyId}}",
+						"entitlements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "entitlements for user Firstname Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/TGCommunityServices/v1/users/{{MyloginId}}/entitlements",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"TGCommunityServices",
+						"v1",
+						"users",
+						"{{MyloginId}}",
+						"entitlements"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Token",
+			"value": ""
+		},
+		{
+			"key": "NEWuserId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "NEWloginId",
+			"value": "Herman.Munster@opentextdemo.com",
+			"type": "string"
+		},
+		{
+			"key": "domain",
+			"value": "apibetagrid.opentext.com",
+			"type": "string"
+		},
+		{
+			"key": "companyId",
+			"value": "GC51278300AS",
+			"type": "string"
+		},
+		{
+			"key": "MyuserId",
+			"value": "GCPHO01O61184",
+			"type": "default"
+		},
+		{
+			"key": "MyloginId",
+			"value": "validuserid@somewhere.com",
+			"type": "default"
+		}
+	]
+}
