@@ -1,0 +1,12 @@
+To setup either collection (These instructions assumes it is the PROD collection)
+1.	Import the collection into Postman
+2.	Open the Prod-Get-Token entry
+3.	Open the Authorization tab
+4.	put the Consumer Key in the Username and Consumer Secret in the Password
+5.	Save that to the collection
+
+Then anytime you want to run any of the queries
+1.	Run Prod-Get-Token first.  You will have to do this every 10 hours
+2.	Run any of the other queries
+3.	After 10 hours you will have to get a new token by running the Prod-GetToken again.
+

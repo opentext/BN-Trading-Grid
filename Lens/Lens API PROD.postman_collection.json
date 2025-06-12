@@ -1,0 +1,816 @@
+{
+	"info": {
+		"_postman_id": "5e8292b6-2243-48ee-af65-c9b94afa8ab3",
+		"name": "Lens API PROD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5147552"
+	},
+	"item": [
+		{
+			"name": "PROD-Get-Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"Token\", jsonData.access_token);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"beta\", \"\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/v1/oauth2/tokens?grant_type=client_credentials",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"v1",
+						"oauth2",
+						"tokens"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Basic Transaction Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query basicTransactionSearch{\r\n    \r\n  getTransactions {\r\n    count\r\n    total\r\n    offset\r\n    transactions{\r\n      transactionid\r\n      sendername\r\n      receivername\r\n      status\r\n      transactionlevel\r\n      errorcode\r\n      externalerrormessage\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Box",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 10\r\n      offset: 0\r\n      contentKeyFilters: []   # required to return contentkeys\r\n\r\n      query: \"SYS* AND 850 AND DOCUMENT\" # Replace the value of this query with a valid search string #\r\n\r\n    })\r\n  {\r\n    transactions {\r\n      arrivaltime\r\n      status\r\n      sendername\r\n      receivername\r\n      transactionid\r\n      editype\r\n      transactionlevel\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"invoice number\"\r\n        \"shipment identification\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n    count\r\n    total\r\n    offset\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Box complicated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"correlationidArray = [];\r",
+							"for (var i=0; i<jsonData.data.getTransactions.transactions.length; i++)\r",
+							"{\r",
+							"    var correlationid = jsonData.data.getTransactions.transactions[i].correlationid;\r",
+							"    if (correlationid != lastcorr) {\r",
+							"        correlationidArray.push(`${correlationid}`);\r",
+							"    }\r",
+							"    var lastcorr = correlationid;\r",
+							"}\r",
+							"pm.collectionVariables.set(\"correlationidArray\", JSON.stringify(correlationidArray));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 100\r\n      offset: 0\r\n      contentKeyFilters: []   # required to return contentkeys\r\n\r\n      query: \"(status:F OR (deliverystatus:DeliveryFailed OR deliverystatus:PartiallyFailed OR deliverystatus:PartiallyDelivered) OR meta.externalerrormessage:* OR meta.errorcode:* OR (meta.errorcount:* AND -meta.errorcount:0))\"\r\n      ##query: \"meta.externalerrormessage:* OR meta.errorcode:* OR (meta.errorcount:* AND -meta.errorcount:0)\"\r\n      ##query: \"meta.ackcode:*\"\r\n      ##query: \"(deliverystatus:DeliveryFailed OR deliverystatus:PartiallyFailed OR deliverystatus:PartiallyDelivered)\"\r\n      ##query: \"SYS* AND 850 AND DOCUMENT\" # Replace the value of this query with a valid search string #\r\n\r\n    })\r\n{\r\n    count\r\n    total\r\n    offset\r\n    transactions {\r\n      arrivaltime\r\n      arrivaltimefacetdaily\r\n      category\r\n      clientsource\r\n      clientstatus\r\n      correlationid\r\n      deliveryackstatus\r\n      deliveryacktimestamp\r\n      deliverycompletedtimestamp\r\n      deliveryfilename\r\n      deliveryreceipt\r\n      deliverystatus\r\n      editype\r\n      envelopetype\r\n      errorcode\r\n      errortype\r\n      externalerrormessage\r\n      fastatus\r\n      fastatusdate\r\n      firstbytetimestamp\r\n      inagent\r\n      inboundpipelineid\r\n      informat\r\n      insize\r\n      invoicetotalamount\r\n      itinerarycompletedtimestamp\r\n      labels\r\n      lastbytetimestamp\r\n      outagent\r\n      outboundpipelineid\r\n      outformat\r\n      outsize\r\n      parenttransactionid\r\n      platform\r\n      pototalamount\r\n      processingcell\r\n      processingcomputezone\r\n      processingregion\r\n      processingsubstatus\r\n      processingtime\r\n      processorid\r\n      purgedate\r\n      readyforpickuptimestamp\r\n      receiveackstatus\r\n      receivefilename\r\n      receiveraddress\r\n      receiverip\r\n      receivermailbox\r\n      receivername\r\n      senderaddress\r\n      senderfilename\r\n      senderip\r\n      sendermailbox\r\n      sendername\r\n      senderreference\r\n      sendertransactionid\r\n      servicetype\r\n      solutionid\r\n      standardversion\r\n      status\r\n      statusdate\r\n      transactionid\r\n      transactionlevel\r\n      type\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"shipment identification\"\r\n        \"invoice number\"\r\n        \"idoc number\"\r\n        \"idoc status\"\r\n        \"reference number\"\r\n        \"pronum\"\r\n        \"SCAC\"\r\n        \"shipment status code\"\r\n        \"status time\"\r\n        \"dfi id number\"\r\n        \"account number\"\r\n        \"reference id\"\r\n        \"original message\",\r\n        \"total transaction count\"\r\n        \"total ach amount\"\r\n        \"total wire amount\"\r\n        \"total amount\"\r\n        \"sender reference\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by PO number",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "#\r\n# where Purchase Order Number starts with CV\r\n#\r\nquery getContentKey {\r\n  getTransactions(\r\n    query:{\r\n      count: 25\r\n      offset: 0\r\n      contentKeyFilters: [\r\n        {\r\n          key: \"purchase order number\" \r\n          value: \"CV*\"\r\n        }\r\n      ]\r\n     }\r\n   )\r\n  {\r\n    count\r\n    total\r\n    offset\r\n    transactions {\r\n      sendername\r\n      receivername\r\n      transactionid\r\n      status\r\n      editype\r\n      transactionlevel\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"invoice number\"\r\n        \"shipment identification\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n      correlationid\r\n      senderaddress\r\n      receiveraddress\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by TP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "#\r\n# Either the sender or the receiver is a specific trading partner\r\n#\r\nquery getTransactionsWithFilter {\r\n    getTransactions(\r\n        query:{ \r\n            count: 20\r\n            offset: 0 \r\n            sortby: { field: arrivaltime type: ASC }\r\n            contentKeyFilters: []\r\n            fields:{\r\n                should:\r\n                [\r\n                    {field: senderaddress query: \"ZZ:DEMORETAILER\"}\r\n                    {field: receiveraddress query: \"ZZ:DEMORETAILER\"}\r\n\r\n                ]                    \r\n            }                \r\n        }\r\n    )                \r\n    { \r\n    transactions { \r\n        arrivaltime \r\n        transactionid \r\n        status \r\n        deliverystatus \r\n        sendername\r\n        receivername \r\n        correlationid \r\n        senderaddress \r\n        receiveraddress\r\n        contentkeys(names: [\r\n            \"purchase order number\"\r\n            \"invoice number\"\r\n            \"shipment identification\"\r\n        ]) {\r\n            key\r\n            value\r\n        }\r\n        } \r\n    count\r\n    total\r\n    offset\r\n    }\r\n}\r\n\r\n\r\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by TP v2 with Errors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "#\r\n# Any attribute matches an address and any of the error conditions is true\r\n#\r\nquery\r\ngetTransactionsWithFilter\r\n{\r\n  getTransactions(\r\n      query:{ \r\n          count: 100\r\n          offset: 0 \r\n          sortby: { field: arrivaltime type: ASC }\r\n          contentKeyFilters: []      # required to return contentkeys\r\n\t\t\t\t\t\r\n\t      query: \"ZZ?DEMORETAILER\" # search for this value across any fields or keys #\r\n\r\n          fields:{\r\n            should: \r\n              [\r\n                {field: status query: \"Failed\"}\r\n                {field: errorcode query: \"*\"}\r\n                {field: externalerrormessage query: \"*\"}\r\n              ]\r\n\r\n          }                \r\n      })                \r\n{ \r\n  transactions {\r\n      arrivaltime\r\n      status\r\n      sendername\r\n      receivername\r\n      status\r\n      editype\r\n\t  status\r\n      errorcode\r\n      externalerrormessage\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"invoice number\"\r\n        \"shipment identification\"\r\n        \r\n      ]) {\r\n        key\r\n        value\r\n        }\r\n      }\r\n      count\r\n      total\r\n      offset\r\n}}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Scrolling",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "#\r\n# Submitting the same query multiple times will return the next 1000 entries\r\n#\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      scroll: true\r\n      sortby: { field: arrivaltime type: ASC }\r\n      contentKeyFilters: []   # required to return contentkeys\r\n      ranges: {\r\n        field: arrivaltime\r\n        from: \"2025-01-01T00:00:00Z\"\r\n        to: \"2025-02-01T00:00:00Z\"\r\n      }\r\n    #query: \"SYS* AND 856\" \r\n    })\r\n  {\r\n    count\r\n    total\r\n    offset\r\n    scrollid\r\n    transactions {\r\n      arrivaltime\r\n      status\r\n      sendername\r\n      receivername\r\n      correlationid\r\n      transactionid\r\n      editype\r\n      transactionlevel\r\n      externalerrormessage\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"invoice number\"\r\n        \"shipment identification\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALL FIELDS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "#\r\n# all possible fields\r\n#\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 10\r\n      offset: 0\r\n      contentKeyFilters: []\r\n    })\r\n  {\r\n    transactions {\r\n      arrivaltime\r\n      category\r\n      correlationid\r\n      deliveryfilename\r\n      deliveryreceipt\r\n      editype\r\n      envelopetype\r\n      errorcode\r\n      externalerrormessage\r\n      fastatus\r\n      fastatusdate\r\n      firstbytetimestamp\r\n      inagent\r\n      informat\r\n      insize\r\n      lastbytetimestamp\r\n      outagent\r\n      outformat\r\n      outsize\r\n      platform\r\n      processingcell\r\n      processingcomputezone\r\n      processingregion\r\n      processingtime\r\n      receivefilename\r\n      receiveraddress\r\n      receivermailbox\r\n      receivername\r\n      senderaddress\r\n      senderfilename\r\n      sendermailbox\r\n      sendername\r\n      senderreference\r\n      sendertransactionid\r\n      servicetype\r\n      solutionid\r\n      standardversion\r\n      status\r\n      statusdate\r\n      transactionid\r\n      transactionlevel\r\n      type\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"shipment identification\"\r\n        \"invoice number\"\r\n        \"idoc number\"\r\n        \"idoc status\"\r\n        \"reference number\"\r\n        \"pronum\"\r\n        \"SCAC\"\r\n        \"shipment status code\"\r\n        \"status time\"\r\n        \"dfi id number\"\r\n        \"account number\"\r\n        \"reference id\"\r\n        \"original message\",\r\n        \"total transaction count\",\r\n        \"total ach amount\",\r\n        \"total wire amount\",\r\n        \"total amount\"\r\n        \"sender reference\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n    count\r\n    total\r\n    offset\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALL FIELDS Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"correlationidArray = [];\r",
+							"for (var i=0; i<jsonData.data.getTransactions.transactions.length; i++)\r",
+							"{\r",
+							"    var correlationid = jsonData.data.getTransactions.transactions[i].correlationid;\r",
+							"    if (correlationid != lastcorr) {\r",
+							"        correlationidArray.push(`${correlationid}`);\r",
+							"    }\r",
+							"    var lastcorr = correlationid;\r",
+							"}\r",
+							"pm.collectionVariables.set(\"correlationidArray\", JSON.stringify(correlationidArray));\r",
+							"//console.log(pm.collectionVariables.get(\"correlationidArray\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "#\r\n# all possible fields\r\n#\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 10\r\n      offset: 0\r\n      contentKeyFilters: []\r\n      fields: {\r\n        must: [\r\n          {\r\n            field:editype query: \"810\"\r\n          }\r\n        ]\r\n      }\r\n\r\n    })\r\n  {\r\n    transactions {\r\n      arrivaltime\r\n      category\r\n      correlationid\r\n      deliveryfilename\r\n      deliveryreceipt\r\n      editype\r\n      envelopetype\r\n      errorcode\r\n      externalerrormessage\r\n      fastatus\r\n      fastatusdate\r\n      firstbytetimestamp\r\n      inagent\r\n      informat\r\n      insize\r\n      lastbytetimestamp\r\n      outagent\r\n      outformat\r\n      outsize\r\n      platform\r\n      processingcell\r\n      processingcomputezone\r\n      processingregion\r\n      processingtime\r\n      receivefilename\r\n      receiveraddress\r\n      receivermailbox\r\n      receivername\r\n      senderaddress\r\n      senderfilename\r\n      sendermailbox\r\n      sendername\r\n      senderreference\r\n      sendertransactionid\r\n      servicetype\r\n      solutionid\r\n      standardversion\r\n      status\r\n      statusdate\r\n      transactionid\r\n      transactionlevel\r\n      type\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"shipment identification\"\r\n        \"invoice number\"\r\n        \"idoc number\"\r\n        \"idoc status\"\r\n        \"reference number\"\r\n        \"pronum\"\r\n        \"SCAC\"\r\n        \"shipment status code\"\r\n        \"status time\"\r\n        \"dfi id number\"\r\n        \"account number\"\r\n        \"reference id\"\r\n        \"original message\",\r\n        \"total transaction count\",\r\n        \"total ach amount\",\r\n        \"total wire amount\",\r\n        \"total amount\"\r\n        \"sender reference\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n    count\r\n    total\r\n    offset\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by correlationid",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# for a specific correlationid\r\n########################################################################\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 25\r\n      offset: 0\r\n\r\n      fields: {\r\n        must: [\r\n          {\r\n            field: correlationid\r\n            query: \"60e20a6e-c1bb-48d4-98c3-90cb8823fc8a\"\r\n          }\r\n        ]\r\n      }\r\n    })\r\n\r\n\r\n  {\r\n    count\r\n    total\r\n    offset\r\n    transactions {\r\n      transactionid\r\n      transactionlevel\r\n      status\r\n      sendername\r\n      receivername\r\n      editype\r\n      senderaddress\r\n      receiveraddress\r\n      correlationid\r\n      externalerrormessage\r\n      errorcode\r\n      errortype\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by correlationid from all Errors",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let correlationid = JSON.parse(pm.collectionVariables.get(\"correlationidArray\"));\r",
+							"var corrstring = \"\";\r",
+							"for (var i=0; i<correlationid.length; i++)\r",
+							"{\r",
+							"    corrstring = corrstring + \"{ field: correlationid query: \\\"\" + correlationid[i] + \"\\\" } \";\r",
+							"}\r",
+							"//console.log(corrstring);\r",
+							"pm.collectionVariables.set(\"corrquery\", corrstring);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# takes the array of correlationid values stored from all Errors\r\n########################################################################\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n        count: 1000\r\n        offset: 0\r\n        contentKeyFilters: []   # required to return contentkeys\r\n\r\n      fields: {\r\n        should: [\r\n          {{corrquery}}\r\n        ]\r\n      }\r\n    })\r\n  {\r\n    count\r\n    total\r\n    offset\r\n    transactions {\r\n      transactionid\r\n      transactionlevel\r\n      status\r\n      sendername\r\n      receivername\r\n      editype\r\n      senderaddress\r\n      receiveraddress\r\n      correlationid\r\n      externalerrormessage\r\n      errorcode\r\n      errortype\r\n      solutionid\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List inbound transactions from a specific partner",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# inbound transactions from a specific partner\r\n########################################################################\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 2\r\n      offset: 0\r\n      \r\n      filters:[\r\n        {\r\n          field: senderaddress\r\n          values:[\r\n            {\r\n              not: false\r\n              value: \"ZZ:DEMORETAILER\"\r\n            }    \r\n          ]\r\n        }\r\n      ]\r\n    })\r\n\r\n\r\n  {\r\n    transactions {\r\n      transactionid\r\n      sendername\r\n      receivername\r\n      transactionlevel\r\n      correlationid\r\n      senderaddress\r\n      receiveraddress\r\n    }\r\n    count\r\n    total\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by TP excl 997",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "##################################################################################################\r\n# all (exclude 997) document level sent or received from 01:147678796\r\n##################################################################################################\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 10\r\n      offset: 0\r\n      contentKeyFilters: []\r\n      filters: [\r\n        {\r\n          field: editype\r\n          values: [\r\n            {\r\n              not: true\r\n              value: \"997\"\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n      fields: {\r\n        must: [\r\n          {\r\n            field:transactionlevel query: \"Document\"\r\n          }\r\n        ]\r\n        should: [\r\n          {\r\n            field: senderaddress\r\n            query: \"ZZ:DEMORETAILER\"\r\n          }\r\n          {\r\n            field: receiveraddress\r\n            query: \"ZZ:DEMORETAILER\"\r\n          }\r\n        ]\r\n      }\r\n    })\r\n {\r\n    count\r\n    offset\r\n    total\r\n    transactions {\r\n      arrivaltime\r\n      status\r\n      sendername\r\n      receivername\r\n      transactionid\r\n      editype\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"invoice number\"\r\n        \"shipment identification\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n       \r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by Date Range",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# by date range\r\n########################################################################\r\nquery getTransactionsWithFilter {\r\n  getTransactions(\r\n    query:{\r\n      count: 20\r\n      offset: 0\r\n      \r\n       ranges: {\r\n        field: arrivaltime\r\n        from: \"2023-02-22T00:00:00Z\"\r\n        to: \"2023-02-24T00:00:00Z\"\r\n      }\r\n      \r\n    })\r\n  {\r\n    transactions {\r\n      transactionid\r\n      status\r\n      arrivaltime\r\n      sendername\r\n      receivername\r\n      correlationid\r\n      senderaddress\r\n      receiveraddress\r\n    }\r\n    count\r\n    total\r\n    offset\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all Errors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"correlationidArray = [];\r",
+							"for (var i=0; i<jsonData.data.getTransactions.transactions.length; i++)\r",
+							"{\r",
+							"    var correlationid = jsonData.data.getTransactions.transactions[i].correlationid;\r",
+							"    if (correlationid != lastcorr) {\r",
+							"        correlationidArray.push(`${correlationid}`);\r",
+							"    }\r",
+							"    var lastcorr = correlationid;\r",
+							"}\r",
+							"pm.collectionVariables.set(\"correlationidArray\", JSON.stringify(correlationidArray));\r",
+							"//console.log(pm.collectionVariables.get(\"correlationidArray\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# either errcode or externalerrormessage is not null\r\n########################################################################\r\nquery getTransactionsWithErrors {\r\n  getTransactions(\r\n    query:{\r\n      count: 15\r\n      offset: 0\r\n      fields: {\r\n        should: [\r\n          {\r\n            field: errorcode\r\n            query: \"*\"\r\n          }\r\n          {\r\n            field: externalerrormessage\r\n            query: \"*\"\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  )\r\n  {\r\n    transactions {\r\n      transactionid\r\n      status\r\n      transactionlevel\r\n      editype\r\n      sendername\r\n      receivername\r\n      correlationid\r\n      senderaddress\r\n      receiveraddress\r\n      errorcode\r\n      externalerrormessage\r\n        \r\n    }\r\n    count\r\n    total\r\n    offset\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "some Errors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"correlationidArray = [];\r",
+							"for (var i=0; i<jsonData.data.getTransactions.transactions.length; i++)\r",
+							"{\r",
+							"    var correlationid = jsonData.data.getTransactions.transactions[i].correlationid;\r",
+							"    if (correlationid != lastcorr) {\r",
+							"        correlationidArray.push(`${correlationid}`);\r",
+							"    }\r",
+							"    var lastcorr = correlationid;\r",
+							"}\r",
+							"pm.collectionVariables.set(\"correlationidArray\", JSON.stringify(correlationidArray));\r",
+							"//console.log(pm.collectionVariables.get(\"correlationidArray\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# either errcode or externalerrormessage is not null\r\n########################################################################\r\nquery getTransactionsWithErrors {\r\n  getTransactions(\r\n    query:{\r\n      count: 10\r\n      offset: 0\r\n      contentKeyFilters: []   # required to return contentkeys\r\n      filters: [\r\n        {\r\n          field: errorcode\r\n          values: [\r\n            {\r\n              not: true\r\n              value: \"-1\"\r\n            }\r\n            {\r\n              not: true\r\n              value: \"-2\"\r\n            }\r\n            {\r\n              not: true\r\n              value: \"-3\"\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n      fields: {\r\n        should: [\r\n          {\r\n            field: errorcode\r\n            query: \"*\"\r\n          }\r\n          {\r\n            field: externalerrormessage\r\n            query: \"*\"\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  )\r\n  {\r\n    count\r\n    total\r\n    offset\r\n    transactions {\r\n      transactionid\r\n      status\r\n      transactionlevel\r\n      editype\r\n      sendername\r\n      receivername\r\n      correlationid\r\n      senderaddress\r\n      receiveraddress\r\n      errorcode\r\n      externalerrormessage\r\n      errortype\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "by internal number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"correlationidArray = [];\r",
+							"for (var i=0; i<jsonData.data.getTransactions.transactions.length; i++)\r",
+							"{\r",
+							"    var correlationid = jsonData.data.getTransactions.transactions[i].correlationid;\r",
+							"    if (correlationid != lastcorr) {\r",
+							"        correlationidArray.push(`${correlationid}`);\r",
+							"    }\r",
+							"    var lastcorr = correlationid;\r",
+							"}\r",
+							"pm.collectionVariables.set(\"correlationidArray\", JSON.stringify(correlationidArray));\r",
+							"//console.log(pm.collectionVariables.get(\"correlationidArray\"));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"pm.collectionVariables.set('today', moment().format((\"YYYY-MM-DD\")));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "########################################################################\r\n# Specific IDoc by number\r\n#          correlationid values collected\r\n########################################################################\r\nquery getTransactionsWithErrors {\r\n  getTransactions(\r\n    query:{\r\n      count: 1000\r\n      offset: 0\r\n      contentKeyFilters: [\r\n        {\r\n          key: \"internal number\" \r\n          value: \"938512\"\r\n        }\r\n      ]\r\n    }\r\n  )\r\n  {\r\n    count\r\n    total\r\n    offset\r\n    transactions {\r\n      transactionid\r\n      sendertransactionid\r\n      status\r\n      transactionlevel\r\n      editype\r\n      sendername\r\n      receivername\r\n      correlationid\r\n      senderaddress\r\n      receiveraddress\r\n      errorcode\r\n      externalerrormessage\r\n      senderreference\r\n      firstbytetimestamp\r\n      lastbytetimestamp\r\n      contentkeys(names: [\r\n        \"purchase order number\"\r\n        \"shipment identification\"\r\n        \"invoice number\"\r\n        \"idoc number\"\r\n        \"idoc status\"\r\n        \"reference number\"\r\n        \"pronum\"\r\n        \"SCAC\"\r\n        \"shipment status code\"\r\n        \"status time\"\r\n        \"dfi id number\"\r\n        \"account number\"\r\n        \"reference id\"\r\n        \"original message\",\r\n        \"total transaction count\",\r\n        \"total ach amount\",\r\n        \"total wire amount\",\r\n        \"total amount\"\r\n        \"sender reference\"\r\n      ]) {\r\n        key\r\n        value\r\n      }\r\n    }\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://api{{beta}}grid.opentext.com/visibility_transaction_search",
+					"protocol": "https",
+					"host": [
+						"api{{beta}}grid",
+						"opentext",
+						"com"
+					],
+					"path": [
+						"visibility_transaction_search"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{Token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Token",
+			"value": ""
+		},
+		{
+			"key": "beta",
+			"value": ""
+		}
+	]
+}
