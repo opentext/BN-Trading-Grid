@@ -28,6 +28,7 @@ Trading Grid Cartographer provides customers with an advanced level of visibilit
 - Update values of a prexref entry
 - Add prexref entry
 - Delete a prexref entry
+- Reserve/Un-reserve entity
 
 ## Import Postman Collection
 
