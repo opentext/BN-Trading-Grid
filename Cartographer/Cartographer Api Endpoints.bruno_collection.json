@@ -1,0 +1,1200 @@
+{
+  "name": "Cartographer Api Endpoints",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "Cross Reference Api",
+      "root": {
+        "meta": {
+          "name": "Cross Reference Api"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Add an entry",
+          "seq": 4,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/entries",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              },
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"key\": \"<string>\",\n  \"values\": [\n    {\n      \"index\": \"<integer>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"index\": \"<integer>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Add prexref entry",
+          "seq": 12,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/prexref/entries",
+            "method": "POST",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              },
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"searchDoctype\": \"<string>\",\n  \"searchSender\": \"<string>\",\n  \"searchReceiver\": \"<string>\",\n  \"profileDoctype\": \"<string>\",\n  \"profileSender\": \"<string>\",\n  \"profileReceiver\": \"<string>\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete a prexref entry",
+          "seq": 14,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/prexref/entries",
+            "method": "DELETE",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              },
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"searchDoctype\": \"<string>\",\n  \"searchSender\": \"<string>\",\n  \"searchReceiver\": \"<string>\",\n  \"profileDoctype\": \"<string>\",\n  \"profileSender\": \"<string>\",\n  \"profileReceiver\": \"<string>\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete an entry",
+          "seq": 3,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/entries/:key",
+            "method": "DELETE",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "key",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Export entity content",
+          "seq": 7,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/export",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get entities",
+          "seq": 5,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities?offset=<integer>&count=<integer>",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "count",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get entity details",
+          "seq": 8,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/content?offset=<integer>&count=<integer>",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "count",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get entity header configuration",
+          "seq": 6,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/header-config",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get prexref entity details",
+          "seq": 10,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/prexref/content?offset=<integer>&count=<integer>",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "count",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get values of an entry",
+          "seq": 1,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/entries/:key",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "key",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Reserve-Un-reserve entity",
+          "seq": 15,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/state",
+            "method": "PATCH",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              },
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"action\": \"<string>\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Search entity content",
+          "seq": 9,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/content-search?searchToken=<string>&offset=<integer>&count=<integer>&onlyCount=<boolean>",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "searchToken",
+                "value": "<string>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "offset",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "count",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "onlyCount",
+                "value": "<boolean>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Search prexref entity content",
+          "seq": 11,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/prexref/content-search?searchToken=<string>&offset=<integer>&count=<integer>&onlyCount=<boolean>",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "searchToken",
+                "value": "<string>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "offset",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "count",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "onlyCount",
+                "value": "<boolean>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update values of a prexref entry",
+          "seq": 13,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/prexref/entries",
+            "method": "PUT",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              },
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"searchDoctype\": \"<string>\",\n  \"searchSender\": \"<string>\",\n  \"searchReceiver\": \"<string>\",\n  \"profileDoctype\": \"<string>\",\n  \"profileSender\": \"<string>\",\n  \"profileReceiver\": \"<string>\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update values of an entry",
+          "seq": 2,
+          "request": {
+            "url": "{{api_host}}/cartographer/xref/v1/solutions/:solutionId/entities/:entityName/entries/:key",
+            "method": "PUT",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/json",
+                "enabled": true
+              },
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "entityName",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "key",
+                "value": "<string>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"key\": \"<string>\",\n  \"values\": [\n    {\n      \"index\": \"<integer>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"index\": \"<integer>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Maps",
+      "root": {
+        "meta": {
+          "name": "Maps"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Download map specification",
+          "seq": 4,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions/:solutionId/maps/:mapId/specifications/:fileId",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/octet-stream",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "mapId",
+                "value": "<long>",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "fileId",
+                "value": "<long>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get maps",
+          "seq": 1,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions/:solutionId/maps?pageNo=<integer>&pageSize=<integer>&sort=<string>",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "pageNo",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "pageSize",
+                "value": "<integer>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "sort",
+                "value": "<string>",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get Map Metadata",
+          "seq": 5,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions/:solutionId/maps/:mapId/metadata",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "mapId",
+                "value": "<long>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get specification files of the map",
+          "seq": 3,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions/:solutionId/maps/:mapId/specifications",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "mapId",
+                "value": "<long>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get trading partners",
+          "seq": 2,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions/:solutionId/maps/:mapId/trading-partners",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "mapId",
+                "value": "<long>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Map annotations",
+          "seq": 6,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions/:solutionId/maps/:mapId/annotations",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [
+              {
+                "name": "solutionId",
+                "value": "{{solutionId}}",
+                "type": "path",
+                "enabled": true
+              },
+              {
+                "name": "mapId",
+                "value": "<long>",
+                "type": "path",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Solutions",
+      "root": {
+        "meta": {
+          "name": "Solutions"
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Get solutions",
+          "seq": 1,
+          "request": {
+            "url": "{{api_host}}/cartographer/mp/v1/solutions",
+            "method": "GET",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json",
+                "enabled": true
+              }
+            ],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "apikey",
+              "apikey": {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "placement": "header"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "root": {
+    "request": {
+      "auth": {
+        "mode": "none"
+      }
+    },
+    "meta": {
+      "name": "Cartographer Api Endpoints"
+    }
+  },
+  "brunoConfig": {
+    "version": "1",
+    "name": "Cartographer Api Endpoints",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
